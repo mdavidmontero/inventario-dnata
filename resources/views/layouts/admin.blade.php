@@ -19,31 +19,20 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
-    <x-banner />
+<body class="font-sans antialiased bg-gray-50">
+    @include('layouts.includes.admin.navigation')
 
-    <div class="min-h-screen bg-gray-100">
-        @livewire('navigation-menu')
-
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
-
-        <!-- Page Content -->
-        <main>
+    @include('layouts.includes.admin.sidebar')
+    <div class="p-4 sm:ml-64">
+        <div class="mt-14">
             {{ $slot }}
-        </main>
+        </div>
     </div>
 
     @stack('modals')
 
     @livewireScripts
-
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 
 </html>

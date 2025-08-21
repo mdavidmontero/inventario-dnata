@@ -1,0 +1,2 @@
+--Componente con clase
+php artisan make:component AdminLayout
