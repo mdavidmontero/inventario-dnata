@@ -6,35 +6,18 @@
             'href' => route('admin.dashboard'),
             'active' => request()->routeIs('admin.dashboard'),
         ],
-        // [
-        //     'header' => 'Administrar Pagina',
-        // ],
-        // [
-        //     'name' => 'Dashboard',
-        //     'icon' => 'fa-solid fa-gauge',
-        //     'href' => route('admin.dashboard'),
-        //     'active' => false,
-        //     'submenu' => [
-        //         [
-        //             'name' => 'Productos',
-        //             'icon' => 'fa-solid fa-gauge',
-        //             'href' => route('admin.dashboard'),
-        //             'active' => request()->routeIs('admin.dashboard'),
-        //         ],
-        //         [
-        //             'name' => 'Billing',
-        //             'icon' => 'fa-solid fa-gauge',
-        //             'href' => route('admin.dashboard'),
-        //             'active' => request()->routeIs('admin.dashboard'),
-        //         ],
-        //         [
-        //             'name' => 'Invoice',
-        //             'icon' => 'fa-solid fa-gauge',
-        //             'href' => route('admin.dashboard'),
-        //             'active' => request()->routeIs('admin.dashboard'),
-        //         ],
-        //     ],
-        // ],
+        [
+            'name' => 'Categorias',
+            'icon' => 'fa-solid fa-list',
+            'href' => route('admin.categories.index'),
+            'active' => request()->routeIs('admin.categories.*'),
+        ],
+        [
+            'name' => 'Productos',
+            'icon' => 'fa-solid fa-box',
+            'href' => route('admin.products.index'),
+            'active' => request()->routeIs('admin.products.*'),
+        ],
     ];
 @endphp
 <div>

@@ -20,12 +20,15 @@
     {{-- Fontawesome --}}
     <script src="https://kit.fontawesome.com/c58b4d7ca8.js" crossorigin="anonymous"></script>
 
+    {{-- Sweetalert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {{-- Wireui --}}
     <wireui:scripts />
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Styles -->
     @livewireStyles
+    @stack('css')
 </head>
 
 <body class="font-sans antialiased bg-gray-50">
@@ -46,6 +49,12 @@
 
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    @if (session('swal'))
+        <script>
+            Swal.fire(@json(session('swal')));
+        </script>
+    @endif
+    @stack('js')
 </body>
 
 </html>
