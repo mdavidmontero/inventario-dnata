@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\QuoteController;
+use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +30,6 @@ Route::resource('purchases', PurchaseController::class)->only(['index', 'create'
 // Ventas
 Route::resource('customers', CustomerController::class)->except(['show']);
 Route::resource('quotes', QuoteController::class)->except(['show']);
+Route::resource('sales', SaleController::class)->only(['index', 'create']);
 
 Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');

@@ -40,7 +40,7 @@ class QuoteTable extends DataTableComponent
                 ->sortable()->format(fn($value) => 'COP ' . number_format($value, 2, '.', ',')),
             Column::make('Acciones', 'actions')->label(
                 function ($row) {
-                    return view('admin.quotes.actions', ['' => $row]);
+                    return view('admin.quotes.actions', ['quote' => $row]);
                 }
             )
         ];
