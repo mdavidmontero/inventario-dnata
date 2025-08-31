@@ -59,18 +59,17 @@
         [
             'name' => 'Ventas',
             'icon' => 'fa-solid fa-store',
-            'active' => request()->routeIs(['admin.customers.*']),
+            'active' => request()->routeIs(['admin.customers.*', 'admin.quotes.*']),
             'submenu' => [
                 [
                     'name' => 'Clientes',
-                    'icon' => 'fa-solid fa-users',
                     'href' => route('admin.customers.index'),
                     'active' => request()->routeIs('admin.customers*'),
                 ],
                 [
                     'name' => 'Cotizaciones',
-                    'href' => '',
-                    'active' => false,
+                    'href' => route('admin.quotes.index'),
+                    'active' => request()->routeIs('admin.quotes*'),
                 ],
                 [
                     'name' => 'Ventas',

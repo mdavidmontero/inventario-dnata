@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
@@ -22,6 +23,16 @@ Route::post('/supplier', function (Request $request) {
     )->get();
 })->name('api.suppliers.index');
 
+Route::post('/customer', function (Request $request) {
+    return Customer::select('id', 'name')->when($request->search, function ($query, $search) {
+        $query->where('name', 'like', '%' . $search . '%')->orWhere('document_number', 'like', '%' . $search . '%');
+    })->when(
+        $request->exists('selected'),
+        fn($query) => $query->whereIn('id', $request->selected),
+        fn($query) => $query->limit(10)
+    )->get();
+})->name('api.customers.index');
+
 Route::post('/warehouses', function (Request $request) {
     return Warehouse::select('id', 'name', 'location as description')->when($request->search, function ($query, $search) {
         $query->where('name', 'like', '%' . $search . '%')->orWhere('location', 'like', '%' . $search . '%');
@@ -33,7 +44,7 @@ Route::post('/warehouses', function (Request $request) {
 })->name('api.warehouses.index');
 
 Route::post('/product', function (Request $request) {
-    Product::select('id', 'name')->when($request->search, function ($query, $search) {
+    return Product::select('id', 'name')->when($request->search, function ($query, $search) {
         $query->where('name', 'like', '%' . $search . '%')->orWhere('sku', 'like', '%' . $search . '%');
     })->when(
         $request->exists('selected'),
