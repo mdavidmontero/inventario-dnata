@@ -81,12 +81,12 @@
         [
             'name' => 'Movimientos',
             'icon' => 'fa-solid fa-truck-moving',
-            'active' => false,
+            'active' => request()->routeIs(['admin.movements*']),
             'submenu' => [
                 [
                     'name' => 'Entradas y Salidas',
-                    'href' => '',
-                    'active' => false,
+                    'href' => route('admin.movements.index'),
+                    'active' => request()->routeIs('admin.movements*'),
                 ],
                 [
                     'name' => 'Transferencias',

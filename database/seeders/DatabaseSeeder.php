@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             IdentitySeeder::class,
             CategorySeeder::class,
             WarehouseSeeder::class,
-
+            ReasonSeeder::class,
         ]);
 
         Customer::factory(20)->create();

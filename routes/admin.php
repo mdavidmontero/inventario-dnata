@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\Admin\MovementController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
@@ -31,5 +32,8 @@ Route::resource('purchases', PurchaseController::class)->only(['index', 'create'
 Route::resource('customers', CustomerController::class)->except(['show']);
 Route::resource('quotes', QuoteController::class)->except(['show']);
 Route::resource('sales', SaleController::class)->only(['index', 'create']);
+
+// Movimientos
+Route::resource('movements', MovementController::class)->only(['index', 'create']);
 
 Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');
