@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Admin\Datatables;
 
-use App\Models\Movement;
+use App\Models\Transfer;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Illuminate\Database\Eloquent\Builder;
 
-class MovementTable extends DataTableComponent
+class TransferTable extends DataTableComponent
 {
     // protected $model = PurchaseOrder::class;
 
@@ -27,24 +27,19 @@ class MovementTable extends DataTableComponent
                 ->sortable(),
             Column::make('Date', 'date')
                 ->sortable()->format(fn($value) => $value->format('d/m/Y')),
-            Column::make('Tipo', 'type')
-                ->sortable()->format(fn($value) => match ($value) {
-                    1 => 'Entrada',
-                    2 => 'Salida',
-                }),
             Column::make('Serie', 'serie')
                 ->sortable(),
             Column::make('Correlativo', 'correlative')
                 ->sortable(),
-            Column::make("Almacen", "warehouse.name")
+            Column::make("Almacen Origen", "originWarehouse.name")
                 ->sortable(),
-            Column::make("Motivo", "reason.name")
+            Column::make("Almacen Destino", "destinationWarehouse.name")
                 ->sortable(),
             Column::make("Total", "total")
                 ->sortable()->format(fn($value) => 'COP ' . number_format($value, 2, '.', ',')),
             Column::make('Acciones', 'actions')->label(
                 function ($row) {
-                    return view('admin.movements.actions', ['movement' => $row]);
+                    return view('admin.transfers.actions', ['transfer' => $row]);
                 }
             )
         ];
@@ -52,6 +47,6 @@ class MovementTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return Movement::query()->with(['warehouse', 'reason']);
+        return Transfer::query()->with(['originWarehouse', 'destinationWarehouse']);
     }
 }

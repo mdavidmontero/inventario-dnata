@@ -38,11 +38,15 @@ Route::post('/customer', function (Request $request) {
 Route::post('/warehouses', function (Request $request) {
     return Warehouse::select('id', 'name', 'location as description')->when($request->search, function ($query, $search) {
         $query->where('name', 'like', '%' . $search . '%')->orWhere('location', 'like', '%' . $search . '%');
-    })->when(
-        $request->exists('selected'),
-        fn($query) => $query->whereIn('id', $request->selected),
-        fn($query) => $query->limit(10)
-    )->get();
+    })
+        ->when($request->exclude, function ($query, $exclude) {
+            $query->where('id', '!=', $exclude);
+        })
+        ->when(
+            $request->exists('selected'),
+            fn($query) => $query->whereIn('id', $request->selected),
+            fn($query) => $query->limit(10)
+        )->get();
 })->name('api.warehouses.index');
 
 Route::post('/product', function (Request $request) {
