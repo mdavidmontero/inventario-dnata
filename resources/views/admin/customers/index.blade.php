@@ -1,10 +1,10 @@
-<x-admin-layout title="Productos | Inventario" :breadcrumbs="[
+<x-admin-layout title="Clientes | Inventario" :breadcrumbs="[
     [
         'name' => 'Dashboard',
         'href' => route('admin.dashboard'),
     ],
     [
-        'name' => 'Productos',
+        'name' => 'Clientes',
     ],
 ]">
     @push('css')
@@ -13,20 +13,12 @@
             table td {
                 font-size: 0.75rem !important;
             }
-
-            .image-product {
-                width: 5rem;
-                height: 3rem;
-                object-fit: cover;
-                object-position: center;
-            }
         </style>
     @endpush
-
     <x-slot name="action">
-        <x-wire-button blue href="{{ route('admin.products.create') }}">Nuevo</x-wire-button>
+        <x-wire-button blue href="{{ route('admin.customers.create') }}">Nuevo</x-wire-button>
     </x-slot>
-    @livewire('admin.datatables.product-table')
+    @livewire('admin.datatables.customer-table')
     @push('js')
         <script>
             forms = document.querySelectorAll(".delete-form")

@@ -49,6 +49,7 @@
         <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
         <script>
             Dropzone.options.myDropzone = {
+                addRemoveLinks: true,
                 init: function() {
                     let myDropzone = this;
                     let images = @json($product->images);
@@ -59,9 +60,17 @@
                             size: image.size,
                         }
                         myDropzone.displayExistingFile(mockFile, `{{ Storage::url('${image.path}') }}`);
-                        console.log(image.path);
+                        myDropzone.emit('complete', mockFile);
+                        myDropzone.files.push(mockFile);
                     });
-                }
+                    this.on('success', function(file, response) {
+                        file.id = response.id;
+                    });
+                    this.on('removedfile', function(file) {
+                        axios.delete(`/admin/images/${file.id}`)
+                    });
+                },
+
             };
         </script>
     @endpush

@@ -114,6 +114,7 @@ class ProductController extends Controller
             'size' => $request->file('file')->getSize(),
         ]);
         return response()->json([
+            'id' => $image->id,
             'path' => $image->path,
         ]);
     }
