@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('serie');
             $table->integer('correlative');
 
-            $table->timestamp('date');
+            $table->timestamp('date')->useCurrent();
 
             $table->foreignId('quote_id')
                 ->constrained()
