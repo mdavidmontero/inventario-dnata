@@ -1,5 +1,5 @@
 <div x-data="{
-    products: @entangle('products'),
+    products: @entangle('products').live,
     total: @entangle('total'),
     removeProduct(index) {
         this.products.splice(index, 1);
@@ -32,7 +32,7 @@
                     'method' => 'POST',
                 ]"
                     option-label="name" option-value="id" placeholder="Selecciona un almacen"
-                    option-description="description" />
+                    option-description="description" :disabled="count($products)" />
                 <x-wire-select label='Motivo' class="lg:col-span-2" wire:model='reason_id' :async-data="[
                     'api' => route('api.reasons.index'),
                     'method' => 'POST',
@@ -61,7 +61,7 @@
                         <tr class="text-gray-700 border-y bg-blue-50">
                             <th class="px-4 py-2">Producto</th>
                             <th class="px-4 py-2">Cantidad</th>
-                            <th class="px-4 py-2">Precio</th>
+                            <th class="px-4 py-2">Precio Costo</th>
                             <th class="px-4 py-2">Subtotal</th>
                             <th class="px-4 py-2"></th>
                         </tr>

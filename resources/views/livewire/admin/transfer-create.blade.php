@@ -30,7 +30,7 @@
                     'method' => 'POST',
                 ]"
                     option-label="name" option-value="id" placeholder="Selecciona un almacen"
-                    option-description="description" />
+                    option-description="description" :disabled="count($products)" />
 
                 <x-wire-select label='Almacen Destino' wire:model.live='destination_warehouse_id' :async-data="[
                     'api' => route('api.warehouses.index'),

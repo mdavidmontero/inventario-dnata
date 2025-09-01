@@ -37,4 +37,9 @@ class Transfer extends Model
             ->withPivot('quantity', 'price', 'subtotal')
             ->withTimestamps();
     }
+
+    public function inventories()
+    {
+        return $this->morphMany(Inventory::class, 'inventoryable');
+    }
 }

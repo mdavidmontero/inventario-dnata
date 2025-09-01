@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Admin;
 
+use App\Facades\Kardex;
+use App\Models\Inventory;
 use App\Models\Movement;
 use App\Models\Product;
-use App\Models\Quote;
 use Livewire\Component;
 
 class MovementCreate extends Component
@@ -58,8 +59,10 @@ class MovementCreate extends Component
     {
         $this->validate([
             'product_id' => 'required|exists:products,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
         ], [], [
-            'product_id' => 'Producto'
+            'product_id' => 'Producto',
+            'warehouse_id' => 'Almacen',
         ]);
 
         $existig = collect($this->products)->firstWhere('id', $this->product_id);
@@ -73,12 +76,15 @@ class MovementCreate extends Component
             return;
         }
         $product = Product::find($this->product_id);
+        $lastRecord = Inventory::where('product_id', $product->id)->where('warehouse_id', $this->warehouse_id)->latest('id')->first();
+
+        $costBalance = $lastRecord?->cost_balance ?? 0;
         $this->products[] = [
             'id' => $product->id,
             'name' => $product->name,
             'quantity' => 1,
-            'price' => $product->price,
-            'subtotal' => $product->price,
+            'price' => $costBalance,
+            'subtotal' => $costBalance,
         ];
         $this->reset('product_id');
     }
@@ -125,6 +131,41 @@ class MovementCreate extends Component
                 'price' => $product['price'],
                 'subtotal' => $product['price'] * $product['quantity'],
             ]);
+
+            // $lastRecord = Inventory::where('product_id', $product['id'])->where('warehouse_id', $this->warehouse_id)->latest('id')->first();
+            // $lastQuantityBalance = $lastRecord?->quantity_balance ?? 0;
+            // $lastTotalBalance = $lastRecord?->total_balance ?? 0;
+
+            // $inventory = new Inventory();
+            // $inventory->inventoryable_type = Movement::class;
+            // $inventory->inventoryable_id = $movement->id;
+            // $inventory->product_id = $product['id'];
+            // $inventory->warehouse_id = $this->warehouse_id;
+            // $inventory->detail = 'Movimiento';
+
+
+            // if ($this->type == 1) {
+            //     $newQuantityBalance = $lastQuantityBalance + $product['quantity'];
+            //     $newTotalBalance = $lastTotalBalance + ($product['quantity'] * $product['price']);
+            //     $inventory->quantity_in = $product['quantity'];
+            //     $inventory->cost_in = $product['price'];
+            //     $inventory->total_in =  $product['quantity'] * $product['price'];
+            // } else if ($this->type == 2) {
+            //     $newQuantityBalance = $lastQuantityBalance - $product['quantity'];
+            //     $newTotalBalance = $lastTotalBalance - ($product['quantity'] * $product['price']);
+            //     $inventory->quantity_out = $product['quantity'];
+            //     $inventory->cost_out = $product['price'];
+            //     $inventory->total_out =  $product['quantity'] * $product['price'];
+            // }
+            // $inventory->quantity_balance = $newQuantityBalance;
+            // $inventory->cost_balance = $newTotalBalance / ($newQuantityBalance ?: 1);
+            // $inventory->total_balance = $newTotalBalance;
+            // $inventory->save();
+            if ($this->type == 1) {
+                Kardex::registerEntry($movement, $product, $this->warehouse_id, 'Movimiento');
+            } else if ($this->type == 2) {
+                Kardex::registerExit($movement, $product, $this->warehouse_id, 'Movimiento');
+            }
         }
         session()->flash('swal', [
             'icon' => 'success',
