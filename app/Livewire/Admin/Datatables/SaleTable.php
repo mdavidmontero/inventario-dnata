@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use App\Models\Sale;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class SaleTable extends DataTableComponent
 {
@@ -20,6 +21,22 @@ class SaleTable extends DataTableComponent
         // $this->setAdditionalSelects([
         //     'purchase_orders.id',
         // ]);
+    }
+
+    public function filters(): array
+    {
+        return [
+            DateRangeFilter::make('Fecha')->config(
+                [
+                    'placeholder' => 'Seleccione rango de fecha'
+                ]
+            )->filter(function ($query, array $dateRange) {
+                $query->whereBetween('date', [
+                    $dateRange['minDate'],
+                    $dateRange['maxDate']
+                ]);
+            })
+        ];
     }
 
     public function columns(): array
