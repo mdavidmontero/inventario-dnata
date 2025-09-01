@@ -1,4 +1,4 @@
-<x-admin-layout title="Productis | Inventario" :breadcrumbs="[
+<x-admin-layout title="Productos | Inventario" :breadcrumbs="[
     [
         'name' => 'Dashboard',
         'href' => route('admin.dashboard'),

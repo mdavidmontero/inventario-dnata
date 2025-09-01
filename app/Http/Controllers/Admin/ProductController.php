@@ -118,4 +118,8 @@ class ProductController extends Controller
             'path' => $image->path,
         ]);
     }
+    public function kardex(Product $product)
+    {
+        return view('admin.products.kardex', compact('product'));
+    }
 }
