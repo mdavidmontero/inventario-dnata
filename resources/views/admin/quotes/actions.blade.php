@@ -1,10 +1,10 @@
 <div class="flex items-center space-x-4">
-    <button>
-        <i class="text-xl text-blue-500 fa-solid fa-envelope"></i>
-    </button>
+    <x-wire-button green>
+        <i class=" fa-solid fa-envelope"></i>
+    </x-wire-button>
 
-    <button>
-        <i class="text-xl text-blue-500 fa-solid fa-file-pdf"></i>
-    </button>
+    <x-wire-button blue href="{{ route('admin.quotes.pdf', $quote) }}">
+        <i class=" fa-solid fa-file-pdf"></i>
+    </x-wire-button>
 
 </div>

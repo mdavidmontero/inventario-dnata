@@ -28,12 +28,21 @@ Route::get('products/{product}/kardex', [ProductController::class, 'kardex'])->n
 // Compras
 Route::resource('suppliers', SupplierController::class)->except(['show']);
 Route::resource('purchase-orders', PurchaseOrderController::class)->only(['index', 'create']);
+Route::get('purchase-orders/{purchaseOrder}/pdf', [PurchaseOrderController::class, 'pdf'])->name('purchase-orders.pdf');
+
 Route::resource('purchases', PurchaseController::class)->only(['index', 'create']);
+Route::get('purchases/{purchase}/pdf', [PurchaseController::class, 'pdf'])->name('purchases.pdf');
 
 // Ventas
 Route::resource('customers', CustomerController::class)->except(['show']);
 Route::resource('quotes', QuoteController::class)->except(['show']);
+Route::get('quotes/{quote}/pdf', [QuoteController::class, 'pdf'])->name('quotes.pdf');
+
+
 Route::resource('sales', SaleController::class)->only(['index', 'create']);
+Route::get('sales/{sale}/pdf', [SaleController::class, 'pdf'])->name('sales.pdf');
+
+
 
 // Movimientos
 Route::resource('movements', MovementController::class)->only(['index', 'create']);
