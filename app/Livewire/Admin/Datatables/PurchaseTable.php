@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
 
@@ -22,6 +23,11 @@ class PurchaseTable extends DataTableComponent
         // $this->setAdditionalSelects([
         //     'purchase_orders.id',
         // ]);
+        $this->setConfigurableAreas([
+            'after-wrapper' => [
+                'admin.purchases.modal'
+            ]
+        ]);
     }
 
     public function filters(): array
@@ -80,5 +86,42 @@ class PurchaseTable extends DataTableComponent
     public function builder(): Builder
     {
         return Purchase::query()->with(['supplier']);
+    }
+
+    // Propiedades
+
+    public $form = [
+        'open' => false,
+        'document' => '',
+        'client' => '',
+        'email' => '',
+        'model' => null,
+        'view_pdf_patch' => 'admin.purchases.pdf',
+    ];
+
+    // Metodo
+    public function openModal(Purchase $purchase)
+    {
+        $this->form['open'] = true;
+        $this->form['document'] = 'Compra ' . '-' . $purchase->correlative;
+        $this->form['client'] = $purchase->supplier->document_number . ' - ' . $purchase->supplier->name;
+        $this->form['email'] = $purchase->supplier->email;
+        $this->form['model'] = $purchase;
+    }
+
+    public function sendEmail()
+    {
+        $this->validate([
+            'form.email' => 'required|email',
+        ]);
+        Mail::to($this->form['email'])->send(new \App\Mail\PdfSend($this->form));
+
+        // Llamar a un mailable
+        $this->dispatch('swal', [
+            'icon' => 'success',
+            'title' => '!Enviado!',
+            'text' => 'Correo enviado con éxito',
+        ]);
+        $this->reset('form');
     }
 }

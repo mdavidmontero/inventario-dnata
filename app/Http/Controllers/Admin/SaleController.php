@@ -24,6 +24,6 @@ class SaleController extends Controller
         $pdf = Pdf::loadView('admin.sales.pdf', [
             'sale' => $sale
         ]);
-        return $pdf->download('venta-{$sale->id}.pdf');
+        return $pdf->download("venta-{$sale->id}.pdf");
     }
 }

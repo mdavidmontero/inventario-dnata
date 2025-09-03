@@ -79,6 +79,7 @@ class MovementCreate extends Component
         $lastRecord = Inventory::where('product_id', $product->id)->where('warehouse_id', $this->warehouse_id)->latest('id')->first();
 
         $costBalance = $lastRecord?->cost_balance ?? 0;
+
         $this->products[] = [
             'id' => $product->id,
             'name' => $product->name,

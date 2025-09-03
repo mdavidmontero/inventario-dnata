@@ -46,6 +46,8 @@ Route::get('sales/{sale}/pdf', [SaleController::class, 'pdf'])->name('sales.pdf'
 
 // Movimientos
 Route::resource('movements', MovementController::class)->only(['index', 'create']);
+Route::get('movements/{movement}/pdf', [MovementController::class, 'pdf'])->name('movements.pdf');
+Route::get('transfers/{transfer}/pdf', [TransferController::class, 'pdf'])->name('transfers.pdf');
 
 Route::resource('transfers', TransferController::class)->only(['index', 'create']);
 
