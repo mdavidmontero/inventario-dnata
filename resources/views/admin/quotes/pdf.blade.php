@@ -138,13 +138,13 @@
 <body>
 
     <div class="title">
-        Detalle de cotización ${{ $quote->serie }} - {{ str_pad($quote->correlative, 4, '0', STR_PAD_LEFT) }}
+        Detalle de cotización ${{ $model->serie }} - {{ str_pad($model->correlative, 4, '0', STR_PAD_LEFT) }}
     </div>
     <div>
-        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($quote->created_at)->format('d/m/Y') }}
-        <strong>Cliente:</strong> {{ $quote->customer->name ?? '_' }}
-        <strong>Almacén:</strong> {{ $quote->warehouse->name ?? '_' }}
-        <strong>Observación:</strong> {{ $quote->observation ?? '_' }}
+        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($model->created_at)->format('d/m/Y') }}
+        <strong>Cliente:</strong> {{ $model->customer->name ?? '_' }}
+        <strong>Almacén:</strong> {{ $model->warehouse->name ?? '_' }}
+        <strong>Observación:</strong> {{ $model->observation ?? '_' }}
     </div>
     <div class="section">
         <table>
@@ -158,7 +158,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($quote->products as $i => $product)
+                @foreach ($model->products as $i => $product)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $product->name }}</td>
@@ -172,7 +172,7 @@
     </div>
 
     <div class="section" style="text-align: right;">
-        <strong>Total:</strong> COP {{ number_format($quote->total, 2) }}
+        <strong>Total:</strong> COP {{ number_format($model->total, 2) }}
     </div>
 </body>
 

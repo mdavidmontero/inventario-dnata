@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use App\Models\Sale;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class SaleTable extends DataTableComponent
@@ -21,6 +22,11 @@ class SaleTable extends DataTableComponent
         // $this->setAdditionalSelects([
         //     'purchase_orders.id',
         // ]);
+        $this->setConfigurableAreas([
+            'after-wrapper' => [
+                'admin.pdf.modal'
+            ]
+        ]);
     }
 
     public function filters(): array
@@ -67,5 +73,39 @@ class SaleTable extends DataTableComponent
     public function builder(): Builder
     {
         return Sale::query()->with(['customer']);
+    }
+
+    public $form = [
+        'open' => false,
+        'document' => '',
+        'client' => '',
+        'email' => '',
+        'model' => null,
+        'view_pdf_patch' => 'admin.sales.pdf',
+    ];
+
+    // Metodo
+    public function openModal(Sale $sale)
+    {
+        $this->form['open'] = true;
+        $this->form['document'] = 'Venta ' . '-' . $sale->correlative;
+        $this->form['client'] = $sale->customer->document_number . ' - ' . $sale->customer->name;
+        $this->form['email'] = $sale->customer->email;
+        $this->form['model'] = $sale;
+    }
+
+    public function sendEmail()
+    {
+        $this->validate([
+            'form.email' => 'required|email',
+        ]);
+        Mail::to($this->form['email'])->send(new \App\Mail\PdfSend($this->form));
+
+        $this->dispatch('swal', [
+            'icon' => 'success',
+            'title' => '!Enviado!',
+            'text' => 'Correo enviado con éxito',
+        ]);
+        $this->reset('form');
     }
 }

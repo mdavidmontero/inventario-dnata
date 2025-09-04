@@ -138,13 +138,13 @@
 <body>
 
     <div class="title">
-        Detalle de Compra ${{ $purchase->serie }} - {{ str_pad($purchase->correlative, 4, '0', STR_PAD_LEFT) }}
+        Detalle de Compra ${{ $model->serie }} - {{ str_pad($model->correlative, 4, '0', STR_PAD_LEFT) }}
     </div>
     <div>
-        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($purchase->created_at)->format('d/m/Y') }}
-        <strong>Proveedor:</strong> {{ $purchase->supplier->name ?? '_' }}
-        <strong>Almacén:</strong> {{ $purchase->warehouse->name ?? '_' }}
-        <strong>Observación:</strong> {{ $purchase->observation ?? '_' }}
+        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($model->created_at)->format('d/m/Y') }}
+        <strong>Proveedor:</strong> {{ $model->supplier->name ?? '_' }}
+        <strong>Almacén:</strong> {{ $model->warehouse->name ?? '_' }}
+        <strong>Observación:</strong> {{ $model->observation ?? '_' }}
     </div>
     <div class="section">
         <table>
@@ -158,7 +158,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($purchase->products as $i => $product)
+                @foreach ($model->products as $i => $product)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $product->name }}</td>
@@ -172,7 +172,7 @@
     </div>
 
     <div class="section" style="text-align: right;">
-        <strong>Total:</strong> COP {{ number_format($purchase->total, 2) }}
+        <strong>Total:</strong> COP {{ number_format($model->total, 2) }}
     </div>
 </body>
 

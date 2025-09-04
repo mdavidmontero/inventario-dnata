@@ -138,14 +138,14 @@
 <body>
 
     <div class="title">
-        Detalle de Movimiento ${{ $movement->serie }} - {{ str_pad($movement->correlative, 4, '0', STR_PAD_LEFT) }}
+        Detalle de Movimiento ${{ $model->serie }} - {{ str_pad($model->correlative, 4, '0', STR_PAD_LEFT) }}
     </div>
     <div>
-        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($movement->created_at)->format('d/m/Y') }}
-        <strong>Tipo de movimiento:</strong> {{ $movement->type == 1 ? 'Ingreso' : 'Salida' }}
-        <strong>Almacén:</strong> {{ $movement->warehouse->name ?? '_' }}
-        <strong>Motivo:</strong> {{ $movement->reason->name ?? '_' }}
-        <strong>Observación:</strong> {{ $movement->observation ?? '_' }}
+        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($model->created_at)->format('d/m/Y') }}
+        <strong>Tipo de movimiento:</strong> {{ $model->type == 1 ? 'Ingreso' : 'Salida' }}
+        <strong>Almacén:</strong> {{ $model->warehouse->name ?? '_' }}
+        <strong>Motivo:</strong> {{ $model->reason->name ?? '_' }}
+        <strong>Observación:</strong> {{ $model->observation ?? '_' }}
     </div>
     <div class="section">
         <table>
@@ -159,7 +159,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($movement->products as $i => $product)
+                @foreach ($model->products as $i => $product)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $product->name }}</td>
@@ -173,7 +173,7 @@
     </div>
 
     <div class="section" style="text-align: right;">
-        <strong>Total:</strong> COP {{ number_format($movement->total, 2) }}
+        <strong>Total:</strong> COP {{ number_format($model->total, 2) }}
     </div>
 </body>
 

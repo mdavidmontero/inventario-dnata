@@ -7,6 +7,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use App\Models\Quote;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class QuoteTable extends DataTableComponent
@@ -20,6 +21,11 @@ class QuoteTable extends DataTableComponent
         // $this->setAdditionalSelects([
         //     'purchase_orders.id',
         // ]);
+        $this->setConfigurableAreas([
+            'after-wrapper' => [
+                'admin.pdf.modal'
+            ]
+        ]);
     }
 
     public function filters(): array
@@ -66,5 +72,39 @@ class QuoteTable extends DataTableComponent
     public function builder(): Builder
     {
         return Quote::query()->with(['customer']);
+    }
+
+    public $form = [
+        'open' => false,
+        'document' => '',
+        'client' => '',
+        'email' => '',
+        'model' => null,
+        'view_pdf_patch' => 'admin.quotes.pdf',
+    ];
+
+    // Metodo
+    public function openModal(Quote $quote)
+    {
+        $this->form['open'] = true;
+        $this->form['document'] = 'Cotización ' . '-' . $quote->correlative;
+        $this->form['client'] = $quote->customer->document_number . ' - ' . $quote->customer->name;
+        $this->form['email'] = $quote->customer->email;
+        $this->form['model'] = $quote;
+    }
+
+    public function sendEmail()
+    {
+        $this->validate([
+            'form.email' => 'required|email',
+        ]);
+        Mail::to($this->form['email'])->send(new \App\Mail\PdfSend($this->form));
+
+        $this->dispatch('swal', [
+            'icon' => 'success',
+            'title' => '!Enviado!',
+            'text' => 'Correo enviado con éxito',
+        ]);
+        $this->reset('form');
     }
 }
