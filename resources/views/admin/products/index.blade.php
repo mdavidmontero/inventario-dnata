@@ -24,7 +24,12 @@
     @endpush
 
     <x-slot name="action">
-        <x-wire-button blue href="{{ route('admin.products.create') }}">Nuevo</x-wire-button>
+        <x-wire-button green href="{{ route('admin.products.import') }}">
+            <i class="fas fa-file-import"></i>
+            Importar</x-wire-button>
+        <x-wire-button blue href="{{ route('admin.products.create') }}">
+            <i class="fas fa-plus"></i>
+            Nuevo</x-wire-button>
     </x-slot>
     @livewire('admin.datatables.product-table')
     @push('js')
