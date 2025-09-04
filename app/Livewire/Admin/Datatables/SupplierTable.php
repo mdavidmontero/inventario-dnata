@@ -2,14 +2,21 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Exports\SuppliersExport;
 use App\Models\Supplier;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupplierTable extends DataTableComponent
 {
     protected $model = Supplier::class;
+
+    public function builder(): Builder
+    {
+        return Supplier::query()->with(['identity']);
+    }
 
     public function configure(): void
     {
@@ -39,8 +46,18 @@ class SupplierTable extends DataTableComponent
             })
         ];
     }
-    public function builder(): Builder
+
+    public function bulkActions(): array
     {
-        return Supplier::query()->with(['identity']);
+        return [
+            'exportSelected' => 'Exportar',
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $suppliers = count($selected)  ? Supplier::whereIn('id', $selected)->with(['identity'])->get() : Supplier::with(['identity'])->get();
+        return Excel::download(new SuppliersExport($suppliers), 'proveedores.xlsx');
     }
 }

@@ -2,16 +2,24 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Exports\MovementsExport;
 use App\Models\Movement;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class MovementTable extends DataTableComponent
 {
     // protected $model = PurchaseOrder::class;
+
+
+    public function builder(): Builder
+    {
+        return Movement::query()->with(['warehouse', 'reason']);
+    }
 
     public function configure(): void
     {
@@ -72,10 +80,18 @@ class MovementTable extends DataTableComponent
             )
         ];
     }
-
-    public function builder(): Builder
+    public function bulkActions(): array
     {
-        return Movement::query()->with(['warehouse', 'reason']);
+        return [
+            'exportSelected' => 'Exportar',
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $movements = count($selected)  ? Movement::whereIn('id', $selected)->with(['warehouse', 'reason'])->get() : Movement::with(['warehouse', 'reason'])->get();
+        return Excel::download(new MovementsExport($movements), 'movimientos.xlsx');
     }
 
     public $form = [

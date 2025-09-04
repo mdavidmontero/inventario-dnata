@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Exports\CategoriesExport;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Category;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CategoryTable extends DataTableComponent
 {
@@ -15,6 +17,7 @@ class CategoryTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setDefaultSort('id', 'desc');
     }
+
 
     public function columns(): array
     {
@@ -29,5 +32,19 @@ class CategoryTable extends DataTableComponent
                 return view('admin.categories.actions', ['category' => $row]);
             })
         ];
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar',
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $categories = count($selected)  ? Category::whereIn('id', $selected)->get() : Category::all();
+        return Excel::download(new CategoriesExport($categories), 'categorias.xlsx');
     }
 }

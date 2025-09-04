@@ -2,16 +2,23 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Exports\PurchaseOrdersExport;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class PurchaseOrderTable extends DataTableComponent
 {
     // protected $model = PurchaseOrder::class;
+
+    public function builder(): Builder
+    {
+        return PurchaseOrder::query()->with(['supplier']);
+    }
 
     public function configure(): void
     {
@@ -68,10 +75,20 @@ class PurchaseOrderTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
+    public function bulkActions(): array
     {
-        return PurchaseOrder::query()->with(['supplier']);
+        return [
+            'exportSelected' => 'Exportar',
+        ];
     }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $purchasesOrder = count($selected)  ? PurchaseOrder::whereIn('id', $selected)->with(['supplier.identity'])->get() : PurchaseOrder::with(['supplier.identity'])->get();
+        return Excel::download(new PurchaseOrdersExport($purchasesOrder), 'ordenesdeCompra.xlsx');
+    }
+
 
 
     public $form = [

@@ -20,9 +20,15 @@ Route::get('/', function () {
 
 // Inventarios
 Route::resource('categories', CategoryController::class)->except(['show']);
+
+Route::get('categories/import', [CategoryController::class, 'import'])->name('categories.import');
+
 Route::resource('products', ProductController::class)->except(['show']);
 Route::post('products/{product}/dropzone', [ProductController::class,  'dropzone'])->name('products.dropzone');
 Route::resource('warehouses', WarehouseController::class)->except(['show']);
+
+Route::get('warehouses/import', [WarehouseController::class, 'import'])->name('warehouses.import');
+
 Route::get('products/{product}/kardex', [ProductController::class, 'kardex'])->name('products.kardex');
 
 Route::get('products/import', [ProductController::class, 'import'])->name('products.import');

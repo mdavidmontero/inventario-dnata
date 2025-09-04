@@ -2,17 +2,23 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Exports\TransfersExport;
 use App\Models\Transfer;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class TransferTable extends DataTableComponent
 {
     // protected $model = PurchaseOrder::class;
 
+    public function builder(): Builder
+    {
+        return Transfer::query()->with(['originWarehouse', 'destinationWarehouse']);
+    }
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -68,10 +74,20 @@ class TransferTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
+    public function bulkActions(): array
     {
-        return Transfer::query()->with(['originWarehouse', 'destinationWarehouse']);
+        return [
+            'exportSelected' => 'Exportar',
+        ];
     }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $transfers = count($selected)  ? Transfer::whereIn('id', $selected)->with(['originWarehouse', 'destinationWarehouse'])->get() : Transfer::with(['originWarehouse', 'destinationWarehouse'])->get();
+        return Excel::download(new TransfersExport($transfers), 'transferencias.xlsx');
+    }
+
 
     public $form = [
         'open' => false,

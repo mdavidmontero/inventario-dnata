@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Exports\PurchasesExport;
 use App\Models\Purchase;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -9,6 +10,7 @@ use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
 
@@ -16,6 +18,10 @@ class PurchaseTable extends DataTableComponent
 {
     // protected $model = PurchaseOrder::class;
 
+    public function builder(): Builder
+    {
+        return Purchase::query()->with(['supplier']);
+    }
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -83,10 +89,21 @@ class PurchaseTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
+    public function bulkActions(): array
     {
-        return Purchase::query()->with(['supplier']);
+        return [
+            'exportSelected' => 'Exportar',
+        ];
     }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $purchasesOrder = count($selected)  ? Purchase::whereIn('id', $selected)->with(['supplier.identity'])->get() : Purchase::with(['supplier.identity'])->get();
+        return Excel::download(new PurchasesExport($purchasesOrder), 'Compras.xlsx');
+    }
+
+
 
     // Propiedades
 

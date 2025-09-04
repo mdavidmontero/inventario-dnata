@@ -2,14 +2,21 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Exports\CustomersExport;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerTable extends DataTableComponent
 {
     protected $model = Customer::class;
+
+    public function builder(): Builder
+    {
+        return Customer::query()->with(['identity']);
+    }
 
     public function configure(): void
     {
@@ -39,8 +46,18 @@ class CustomerTable extends DataTableComponent
             })
         ];
     }
-    public function builder(): Builder
+
+    public function bulkActions(): array
     {
-        return Customer::query()->with(['identity']);
+        return [
+            'exportSelected' => 'Exportar',
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $customers = count($selected)  ? Customer::whereIn('id', $selected)->with(['identity'])->get() : Customer::with(['identity'])->get();
+        return Excel::download(new CustomersExport($customers), 'clientes.xlsx');
     }
 }
