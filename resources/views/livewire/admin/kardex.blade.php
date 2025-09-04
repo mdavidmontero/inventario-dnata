@@ -94,6 +94,9 @@
                                 {{ $inventory->cost_in }}
                             </td>
                             <td class="px-4 py-2 text-center">
+                                {{ $inventory->total_in }}
+                            </td>
+                            <td class="px-4 py-2 text-center">
                                 {{ $inventory->quantity_out }}
                             </td>
                             <td class="px-4 py-2 text-center">
