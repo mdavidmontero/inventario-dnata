@@ -99,15 +99,15 @@
     // Grupo Configuración
     $configuracionLinks = [
         new MenuHeader('Configuración'),
-        // new MenuLink('Usuarios', 'fa-solid fa-user', 'admin.users.index', request()->routeIs('admin.users.*')),
-        // new MenuLink('Roles', 'fa-solid fa-user-group', 'admin.roles.index', request()->routeIs('admin.roles.*')),
-        // new MenuLink(
-        //     'Permisos',
-        //     'fa-solid fa-lock',
-        //     'admin.permissions.index',
-        //     request()->routeIs('admin.permissions.*'),
-        // ),
-        // new MenuLink('Ajustes', 'fa-solid fa-gear', 'admin.settings.index', request()->routeIs('admin.settings.*')),
+        new MenuLink('Usuarios', 'fa-solid fa-user', 'admin.users.index', request()->routeIs('admin.users.*')),
+        new MenuLink('Roles', 'fa-solid fa-user-group', 'admin.roles.index', request()->routeIs('admin.roles.*')),
+        new MenuLink(
+            'Permisos',
+            'fa-solid fa-lock',
+            'admin.permissions.index',
+            request()->routeIs('admin.permissions.*'),
+        ),
+        new MenuLink('Ajustes', 'fa-solid fa-gear', 'admin.settings.index', request()->routeIs('admin.settings.*')),
     ];
 
     // Menú completo
