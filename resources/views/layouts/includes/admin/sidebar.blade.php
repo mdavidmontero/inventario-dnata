@@ -10,11 +10,16 @@
         active: request()->routeIs(['admin.categories.*', 'admin.products.*', 'admin.warehouses.*']),
     );
     $inventarioGroup
-        ->addItem('Categorias', 'fa-solid fa-list', 'admin.categories.index', request()->routeIs('admin.categories.*'))
-        ->addItem('Productos', 'fa-solid fa-box', 'admin.products.index', request()->routeIs('admin.products.*'))
+        ->addItem(
+            'Categorias',
+            'fa-regular fa-circle',
+            'admin.categories.index',
+            request()->routeIs('admin.categories.*'),
+        )
+        ->addItem('Productos', 'fa-regular fa-circle', 'admin.products.index', request()->routeIs('admin.products.*'))
         ->addItem(
             'Almacenes',
-            'fa-solid fa-warehouse',
+            'fa-regular fa-circle',
             'admin.warehouses.index',
             request()->routeIs('admin.warehouses.*'),
         );
