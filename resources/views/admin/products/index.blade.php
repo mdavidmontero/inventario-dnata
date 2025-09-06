@@ -23,13 +23,15 @@
         </style>
     @endpush
 
-    <x-slot name="action">
-        <x-wire-button green href="{{ route('admin.products.import') }}">
-            <i class="fas fa-file-import"></i>
-            Importar</x-wire-button>
-        <x-wire-button blue href="{{ route('admin.products.create') }}">
-            <i class="fas fa-plus"></i>
-            Nuevo</x-wire-button>
-    </x-slot>
+    @can('create-products')
+        <x-slot name="action">
+            <x-wire-button green href="{{ route('admin.products.import') }}">
+                <i class="fas fa-file-import"></i>
+                Importar</x-wire-button>
+            <x-wire-button blue href="{{ route('admin.products.create') }}">
+                <i class="fas fa-plus"></i>
+                Nuevo</x-wire-button>
+        </x-slot>
+    @endcan
     @livewire('admin.datatables.product-table')
 </x-admin-layout>

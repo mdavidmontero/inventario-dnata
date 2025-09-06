@@ -26,14 +26,19 @@
         active: request()->routeIs(['admin.suppliers.*', 'admin.purchase-orders.*', 'admin.purchases.*']),
     );
     $comprasGroup
-        ->addItem('Proveedores', 'fa-solid fa-circle', 'admin.suppliers.index', request()->routeIs('admin.suppliers.*'))
+        ->addItem(
+            'Proveedores',
+            'fa-regular fa-circle',
+            'admin.suppliers.index',
+            request()->routeIs('admin.suppliers.*'),
+        )
         ->addItem(
             'Ordenes de Compra',
-            'fa-solid fa-circle',
+            'fa-regular fa-circle',
             'admin.purchase-orders.index',
             request()->routeIs('admin.purchase-orders.*'),
         )
-        ->addItem('Compras', 'fa-solid fa-circle', 'admin.purchases.index', request()->routeIs('admin.purchases.*'));
+        ->addItem('Compras', 'fa-regular fa-circle', 'admin.purchases.index', request()->routeIs('admin.purchases.*'));
 
     // Grupo Ventas
     $ventasGroup = new MenuGroup(
@@ -42,9 +47,9 @@
         active: request()->routeIs(['admin.customers.*', 'admin.quotes.*', 'admin.sales.*']),
     );
     $ventasGroup
-        ->addItem('Clientes', 'fa-solid fa-circle', 'admin.customers.index', request()->routeIs('admin.customers.*'))
-        ->addItem('Cotizaciones', 'fa-solid fa-circle', 'admin.quotes.index', request()->routeIs('admin.quotes.*'))
-        ->addItem('Ventas', 'fa-solid fa-circle', 'admin.sales.index', request()->routeIs('admin.sales.*'));
+        ->addItem('Clientes', 'fa-regular fa-circle', 'admin.customers.index', request()->routeIs('admin.customers.*'))
+        ->addItem('Cotizaciones', 'fa-regular fa-circle', 'admin.quotes.index', request()->routeIs('admin.quotes.*'))
+        ->addItem('Ventas', 'fa-regular fa-circle', 'admin.sales.index', request()->routeIs('admin.sales.*'));
 
     // Grupo Movimientos
     $movimientosGroup = new MenuGroup(
@@ -55,13 +60,13 @@
     $movimientosGroup
         ->addItem(
             'Entradas y Salidas',
-            'fa-solid fa-circle',
+            'fa-regular fa-circle',
             'admin.movements.index',
             request()->routeIs('admin.movements.*'),
         )
         ->addItem(
             'Transferencias',
-            'fa-solid fa-circle',
+            'fa-regular fa-circle',
             'admin.transfers.index',
             request()->routeIs('admin.transfers.*'),
         );
@@ -79,19 +84,19 @@
     $reportesGroup
         ->addItem(
             'Productos Top',
-            'fa-solid fa-circle',
+            'fa-regular fa-circle',
             'admin.reports.top-products',
             request()->routeIs('admin.reports.top-products'),
         )
         ->addItem(
             'Clientes frecuentes',
-            'fa-solid fa-circle',
+            'fa-regular fa-circle',
             'admin.reports.top-customers',
             request()->routeIs('admin.reports.top-customers'),
         )
         ->addItem(
             'Stock',
-            'fa-solid fa-circle',
+            'fa-regular fa-circle',
             'admin.reports.low-stock',
             request()->routeIs('admin.reports.low-stock'),
         );
@@ -100,7 +105,7 @@
     $configuracionLinks = [
         new MenuHeader('Configuración'),
         new MenuLink('Usuarios', 'fa-solid fa-user', 'admin.users.index', request()->routeIs('admin.users.*')),
-        // new MenuLink('Roles', 'fa-solid fa-user-group', 'admin.roles.index', request()->routeIs('admin.roles.*')),
+        new MenuLink('Roles', 'fa-solid fa-user-group', 'admin.roles.index', request()->routeIs('admin.roles.*')),
         // new MenuLink(
         //     'Permisos',
         //     'fa-solid fa-lock',

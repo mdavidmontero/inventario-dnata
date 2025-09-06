@@ -15,8 +15,10 @@
             }
         </style>
     @endpush
-    <x-slot name="action">
-        <x-wire-button blue href="{{ route('admin.suppliers.create') }}">Nuevo</x-wire-button>
-    </x-slot>
+    @can('create-suppliers')
+        <x-slot name="action">
+            <x-wire-button blue href="{{ route('admin.suppliers.create') }}">Nuevo</x-wire-button>
+        </x-slot>
+    @endcan
     @livewire('admin.datatables.supplier-table')
 </x-admin-layout>

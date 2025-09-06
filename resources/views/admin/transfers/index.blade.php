@@ -7,10 +7,11 @@
         'name' => 'Transferencias',
     ],
 ]">
-
-    <x-slot name="action">
-        <x-wire-button blue href="{{ route('admin.transfers.create') }}">Nuevo</x-wire-button>
-    </x-slot>
+    @can('create-transfers')
+        <x-slot name="action">
+            <x-wire-button blue href="{{ route('admin.transfers.create') }}">Nuevo</x-wire-button>
+        </x-slot>
+    @endcan
 
     @livewire('admin.datatables.transfer-table')
 </x-admin-layout>

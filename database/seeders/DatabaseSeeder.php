@@ -17,17 +17,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Mateo',
-            'email' => 'mateo@correo.com',
-            'password' => bcrypt('password'),
-        ]);
         $this->call([
             IdentitySeeder::class,
             CategorySeeder::class,
             WarehouseSeeder::class,
             ReasonSeeder::class,
+            RoleSeeder::class,
         ]);
 
         Customer::factory(20)->create();
