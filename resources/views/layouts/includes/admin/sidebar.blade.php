@@ -99,7 +99,7 @@
     // Grupo Configuración
     $configuracionLinks = [
         new MenuHeader('Configuración'),
-        // new MenuLink('Usuarios', 'fa-solid fa-user', 'admin.users.index', request()->routeIs('admin.users.*')),
+        new MenuLink('Usuarios', 'fa-solid fa-user', 'admin.users.index', request()->routeIs('admin.users.*')),
         // new MenuLink('Roles', 'fa-solid fa-user-group', 'admin.roles.index', request()->routeIs('admin.roles.*')),
         // new MenuLink(
         //     'Permisos',
