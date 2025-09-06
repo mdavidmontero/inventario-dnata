@@ -49,8 +49,7 @@
                         'api' => route('api.warehouses.index'),
                         'method' => 'POST',
                     ]" option-label="name"
-                        option-value="id" placeholder="Selecciona un almacen" option-description="description"
-                        :disabled="count($products)" />
+                        option-value="id" placeholder="Selecciona un almacen" option-description="description" />
                 </div>
             </div>
 
