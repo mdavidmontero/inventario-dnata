@@ -4,7 +4,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
-use Livewire\Livewire;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,9 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('admin')
                 ->name('admin.')
                 ->group(base_path('routes/admin.php'));
-            Route::middleware(['web', 'auth'])->group(function () {
-                Livewire::routes(); // Funciona para todos los usuarios autenticados
-            });
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
