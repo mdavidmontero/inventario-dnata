@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
+            Config::set('session.secure', true);
+            Config::set('session.same_site', 'lax');
+            Config::set('session.domain', '.up.railway.app');
         }
     }
 }
